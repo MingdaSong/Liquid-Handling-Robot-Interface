@@ -54,8 +54,8 @@ ser = serial.Serial('COM1', 38400)
 
 def dt_command(cmd):
     try:
-        ser.write((f"1>{cmd}\r").encode())
-        response = ser.readline().decode().strip()
+        ser.write((f"1>{cmd}\n").encode())
+        response = ser.readline().decode()
     except serial.SerialException as e:
         abort(500, description=str(e))
     return response
