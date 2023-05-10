@@ -41,8 +41,11 @@
 #
 # handler = LiquidHandler('COM1')  # 用你的串口名称替换'COM3'
 # print(handler.detect_liquid())
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, abort
 import serial
+
+# 配置你的 Token，用于身份验证
+VALID_TOKEN = "your_token_here"
 
 app = Flask(__name__)
 
@@ -50,44 +53,74 @@ ser = serial.Serial('COM1', 38400)
 
 
 def dt_command(cmd):
-    ser.write((f"1>{cmd}\r").encode())
-    response = ser.readline().decode().strip()
+    try:
+        ser.write((f"1>{cmd}\r").encode())
+        response = ser.readline().decode().strip()
+    except serial.SerialException as e:
+        abort(500, description=str(e))
     return response
+
+
+def check_token(token):
+    return token == VALID_TOKEN
 
 
 @app.route('/initialize', methods=['POST'])
 def initialize():
-    print(request.data)
-    speed = request.json.get('speed', '16000')
-    power = request.json.get('power', '100')
-    tip_head = request.json.get('tip_head', '0')
+    if not check_token(request.headers.get('token')):
+        abort(401)
+    data = request.get_json()
+    if not data:
+        abort(400, description="Invalid JSON.")
+    speed = data.get('speed', '16000')
+    power = data.get('power', '100')
+    tip_head = data.get('tip_head', '0')
+    # 在此可以加入对 speed, power, tip_head 参数的校验逻辑
     response = dt_command(f"It{speed},{power},{tip_head}")
     return jsonify(response=response)
 
 
 @app.route('/absorb', methods=['POST'])
 def absorb():
-    volume = request.json.get('volume', '10000')
-    speed = request.json.get('speed', '200')
-    cutoff_speed = request.json.get('cutoff_speed', '10')
+    if not check_token(request.headers.get('token')):
+        abort(401)
+    data = request.get_json()
+    if not data:
+        abort(400, description="Invalid JSON.")
+    volume = data.get('volume', '10000')
+    speed = data.get('speed', '200')
+    cutoff_speed = data.get('cutoff_speed', '10')
+    # 在此可以加入对 volume, speed, cutoff_speed 参数的校验逻辑
     response = dt_command(f"Ia{volume},{speed},{cutoff_speed}")
     return jsonify(response=response)
 
 
 @app.route('/dispense', methods=['POST'])
 def dispense():
-    volume = request.json.get('volume', '1000')
-    back_suck_volume = request.json.get('back_suck_volume', '500')
-    speed = request.json.get('speed', '200')
-    cutoff_speed = request.json.get('cutoff_speed', '100')
+    if not check_token(request.headers.get('token')):
+        abort(401)
+    data = request.get_json()
+    if not data:
+        abort(400, description="Invalid JSON.")
+    volume = data.get('volume', '1000')
+    back_suck_volume = data.get('back_suck_volume', '500')
+    speed = data.get('speed', '200')
+    cutoff_speed = data.get('cutoff_speed', '100')
+    # 在此可以加入对 volume, back_suck_volume, speed, cutoff_speed 参数的校验逻辑
     response = dt_command(f"Da{volume},{back_suck_volume},{speed},{cutoff_speed}")
     return jsonify(response=response)
 
 
 @app.route('/detect', methods=['POST'])
 def detect():
-    auto_report_status = request.json.get('auto_report_status', '1')
-    timeout = request.json.get('timeout', '5000')
+    if not check_token(request.headers.get('token')):
+        abort(401)
+    data = request.get_json()
+    if not data:
+        abort(400, description="Invalid JSON.")
+    auto_report_status = data.get('auto_report_status', '1')
+    timeout = data.get('timeout', '5000')
+    # 在此可以加入对 auto_report_status, timeout 参数的校验逻辑
     response = dt_command(f"Ld{auto_report_status},{timeout}")
     return jsonify(response=response)
 
