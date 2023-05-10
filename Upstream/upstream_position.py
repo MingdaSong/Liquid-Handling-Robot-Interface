@@ -4,13 +4,12 @@ from liquid_handler import LiquidHandler
 from functools import wraps
 from flask import request, abort
 
-
 # 配置Token，用于身份验证
 VALID_TOKEN = "your_token_here"
 
 app = Flask(__name__)
 
-handler = LiquidHandler('COM1')
+handler = LiquidHandler('COM1', 2)
 
 
 def check_token(token):
@@ -51,7 +50,7 @@ def absorb():
     cutoff_speed = request.json.get('cutoff_speed', 10)
 
     # 在此可以加入对 volume, speed, cutoff_speed 参数的校验逻辑
-    response = handler.aspirate(volume, speed, cutoff_speed)
+    response = handler.absorb(volume, speed, cutoff_speed)
     return jsonify(response=response)
 
 
@@ -76,6 +75,45 @@ def detect():
 
     # 在此可以加入对 auto_report_status, timeout 参数的校验逻辑
     response = handler.detect_liquid(auto_report_status, timeout)
+    return jsonify(response=response)
+
+
+@app.route('/status', methods=['GET'])
+def get_status():
+    if not check_token(request.headers.get('token')):
+        abort(401)
+    response = handler.get_status()
+    return jsonify(response=response)
+
+
+@app.route('/read_parameter', methods=['POST'])
+def read_parameter():
+    if not check_token(request.headers.get('token')):
+        abort(401)
+    data = request.get_json()
+    if not data:
+        abort(400, description="Invalid JSON.")
+    parameter_number = data.get('parameter_number')
+    if not parameter_number:
+        abort(400, description="Invalid parameter_number.")
+    response = handler.read_parameter(parameter_number)
+    return jsonify(response=response)
+
+
+@app.route('/set_parameter', methods=['POST'])
+def set_parameter():
+    if not check_token(request.headers.get('token')):
+        abort(401)
+    data = request.get_json()
+    if not data:
+        abort(400, description="Invalid JSON.")
+    parameter_number = data.get('parameter_number')
+    value = data.get('value')
+    if not parameter_number:
+        abort(400, description="Invalid parameter_number.")
+    if not value:
+        abort(400, description="Invalid value.")
+    response = handler.set_parameter(parameter_number, value)
     return jsonify(response=response)
 
 
