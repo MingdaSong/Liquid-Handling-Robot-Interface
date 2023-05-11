@@ -124,7 +124,7 @@ API可以通过HTTP请求进行调用。以下是API端点和请求参数的说�
 
 ## 测试方法
 
-### 1. 通过ssh登录到linux服务器并使用clinet脚本
+### 1. 通过ssh登录到linux服务器并使用clinet脚本进行
 
 ```python
 python client.py --url http://127.0.0.1:5000 --token your_token_here --path initialize --speed 15000 --power 100 --tip_head 0
@@ -136,7 +136,7 @@ python client.py --url http://127.0.0.1:5000 --token your_token_here --path read
 python client.py --url http://127.0.0.1:5000 --token your_token_here --path set_parameter --parameter_number 54 --value 10
 ```
 
-### 2. 通过curl 方法访问
+### 2. 通过curl 方法进行外部访问
 
 ```python
 curl -X POST [API_URL]/initialize -H "Authorization: Bearer [VALID_TOKEN]" -d "speed=16000&power=100&tip_head=0"
