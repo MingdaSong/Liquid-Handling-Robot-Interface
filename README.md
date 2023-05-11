@@ -32,16 +32,12 @@
 - 运行以下命令启动API：
 
   ```
-  python app.py
+  python server.py
   ```
 
   API将会在本地的5000端口上运行。如果要在其他主机上访问API，需要将API绑定到0.0.0.0（即所有IP地址）：
 
-  ```
-  python app.py --host 0.0.0.0
-  ```
-
-  这样API就可以通过网络IP地址进行访问。
+  要实现外部访问需要在linux部署nginx服务
 
 ## 调用API
 
