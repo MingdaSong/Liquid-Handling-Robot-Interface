@@ -2,6 +2,8 @@
 
 本项目是一个液体处理机器人的控制API，用于控制液体处理机器人的各种操作，如初始化、吸液、排液、液面探测等。API可以通过HTTP请求进行调用。
 
+使用了DT协议
+
 目前已经将该服务部署到我个人的linux Ubuntu服务器上
 
 ## 技术栈
@@ -138,3 +140,27 @@ python client.py --url http://127.0.0.1:5000 --token your_token_here --path set_
 curl -X POST [API_URL]/initialize -H "Authorization: Bearer [VALID_TOKEN]" -d "speed=16000&power=100&tip_head=0"
 
 ```
+
+## 返回值
+
+运行下面的命令行，例如
+
+```python
+python client.py --url http://127.0.0.1:5000 --token your_token_here --path initialize --speed 15000 --power 100 --tip_head 0
+```
+
+返回值response：
+
+```python
+{'response': '2<2\n'}
+Status code: 200
+Response body: {"response":"2<2\n"}
+```
+
+## Linux部署
+
+已将该项目部署到了我个人的腾讯云服务器上
+
+![image.png](assets/image.png)
+
+![image.png](assets/image2.png)
