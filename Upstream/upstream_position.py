@@ -9,7 +9,7 @@ VALID_TOKEN = "your_token_here"
 
 app = Flask(__name__)
 
-handler = LiquidHandler('COM1', 2)
+handler = LiquidHandler('/dev/pts/5', 2)
 
 
 def check_token(token):

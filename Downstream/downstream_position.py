@@ -1,7 +1,7 @@
 import time
 import serial
 
-ser = serial.Serial('COM2', 38400)
+ser = serial.Serial('/dev/pts/6', 38400)
 
 while True:
     # 从串口读取数据
