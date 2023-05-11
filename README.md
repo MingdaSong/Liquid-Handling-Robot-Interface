@@ -1,4 +1,4 @@
-curl -X POST [API_URL]/initialize -H "Authorization: Bearer [VALID_TOKEN]" -d "speed=16000&power=100&tip_head=0"# 液体处理机器人控制API
+# 液体处理机器人控制API
 
 本项目是一个液体处理机器人的控制API，用于控制液体处理机器人的各种操作，如初始化、吸液、排液、液面探测等。API可以通过HTTP请求进行调用。
 
