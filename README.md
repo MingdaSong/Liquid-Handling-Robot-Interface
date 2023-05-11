@@ -1,6 +1,8 @@
-# 液体处理机器人控制API
+curl -X POST [API_URL]/initialize -H "Authorization: Bearer [VALID_TOKEN]" -d "speed=16000&power=100&tip_head=0"# 液体处理机器人控制API
 
 本项目是一个液体处理机器人的控制API，用于控制液体处理机器人的各种操作，如初始化、吸液、排液、液面探测等。API可以通过HTTP请求进行调用。
+
+目前已经将该服务部署到我个人的linux服务器上
 
 ## 技术栈
 
@@ -48,6 +50,7 @@ API可以通过HTTP请求进行调用。以下是API端点和请求参数的说�
 - `/initialize`
 
   初始化液体处理机器人，设置运行速度、运行功率和TIP头。
+  请求方法：POST
 
   请求参数：
 
@@ -58,6 +61,8 @@ API可以通过HTTP请求进行调用。以下是API端点和请求参数的说�
 
   液面探测
 
+  请求方法：POST
+
   请求参数：
 
   - `auto_report`（必须）：探测到液面后自动上报状态，设置为1。
@@ -65,6 +70,8 @@ API可以通过HTTP请求进行调用。以下是API端点和请求参数的说�
 - `/absorb`
 
   吸液
+
+  请求方法：POST
 
   请求参数：
 
@@ -74,6 +81,8 @@ API可以通过HTTP请求进行调用。以下是API端点和请求参数的说�
 - `/dispense`
 
   排液
+
+  请求方法：POST
 
   请求参数：
 
@@ -85,12 +94,16 @@ API可以通过HTTP请求进行调用。以下是API端点和请求参数的说�
 
   查询当前状态
 
+  请求方法：GET
+
   请求参数：
 
   - 无参数
 - `/read_parameter`
 
   读取指定参数的值
+
+  请求方法：POST
 
   请求参数：
 
@@ -100,9 +113,32 @@ API可以通过HTTP请求进行调用。以下是API端点和请求参数的说�
 
   设置指定参数的值
 
+  请求方法：POST
+
   请求参数：
 
   - `parameter_number`（必须）：寄存器地址。例如，当`parameter_number`等于54时，表示设置液面探测系数。
   - `value`（必须）：要设置的值。例如，当`value`等于10时，表示液面探测系数设置为10。
 
 以上所有API请求的成功回应为设备地址和执行成功状态，例如`1<2`表示目标设备地址1，指令执行成功状态2。
+
+## 测试方法
+
+### 1. 通过ssh登录到linux服务器并使用clinet脚本
+
+```python
+python client.py --url http://127.0.0.1:5000 --token your_token_here --path initialize --speed 15000 --power 100 --tip_head 0
+python client.py --url http://127.0.0.1:5000 --token your_token_here --path absorb --volume 10000 --speed 200 --cutoff_speed 10
+python client.py --url http://127.0.0.1:5000 --token your_token_here --path dispense --volume 1000 --back_suck_volume 500 --speed 200 --cutoff_speed 100
+python client.py --url http://127.0.0.1:5000 --token your_token_here --path detect --auto_report_status 1 --timeout 5000
+python client.py --url http://127.0.0.1:5000 --token your_token_here --path status
+python client.py --url http://127.0.0.1:5000 --token your_token_here --path read_parameter --parameter_number 3
+python client.py --url http://127.0.0.1:5000 --token your_token_here --path set_parameter --parameter_number 54 --value 10
+```
+
+### 2. 通过curl 方法访问
+
+```python
+curl -X POST [API_URL]/initialize -H "Authorization: Bearer [VALID_TOKEN]" -d "speed=16000&power=100&tip_head=0"
+
+```
