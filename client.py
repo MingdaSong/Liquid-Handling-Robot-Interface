@@ -59,10 +59,13 @@ print("Response body:", response.text)
 # 测试命令行代码
 
 
-# python post_testing.py --url http://127.0.0.1:5000 --token your_token_here --path initialize --speed 15000 --power 100 --tip_head 0
-# python post_testing.py --url http://127.0.0.1:5000 --token your_token_here --path absorb --volume 10000 --speed 200 --cutoff_speed 10
-# python post_testing.py --url http://127.0.0.1:5000 --token your_token_here --path dispense --volume 1000 --back_suck_volume 500 --speed 200 --cutoff_speed 100
-# python post_testing.py --url http://127.0.0.1:5000 --token your_token_here --path detect --auto_report_status 1 --timeout 5000
-# python post_testing.py --url http://127.0.0.1:5000 --token your_token_here --path status
-# python post_testing.py --url http://127.0.0.1:5000 --token your_token_here --path read_parameter --parameter_number 3
-# python post_testing.py --url http://127.0.0.1:5000 --token your_token_here --path set_parameter --parameter_number 54 --value 10
+# python client.py --url http://127.0.0.1:5000 --token your_token_here --path initialize --speed 15000 --power 100 --tip_head 0
+# python client.py --url http://127.0.0.1:5000 --token your_token_here --path absorb --volume 10000 --speed 200 --cutoff_speed 10
+# python client.py --url http://127.0.0.1:5000 --token your_token_here --path dispense --volume 1000 --back_suck_volume 500 --speed 200 --cutoff_speed 100
+# python client.py --url http://127.0.0.1:5000 --token your_token_here --path detect --auto_report_status 1 --timeout 5000
+# python client.py --url http://127.0.0.1:5000 --token your_token_here --path status
+# python client.py --url http://127.0.0.1:5000 --token your_token_here --path read_parameter --parameter_number 3
+# python client.py --url http://127.0.0.1:5000 --token your_token_here --path set_parameter --parameter_number 54 --value 10
+
+
+

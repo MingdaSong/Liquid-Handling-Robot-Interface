@@ -21,7 +21,7 @@ def validate_json_token(f):
     def decorated(*args, **kwargs):
         token = request.headers.get('token')
         if not token:
-            abort(401)
+            abort(404)
         if token != VALID_TOKEN:
             abort(401)
         data = request.get_json()
