@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, abort
 from liquid_handler import LiquidHandler
 
 from functools import wraps
-from flask import request, abort
+# from flask import request, abort
 
 # 配置Token，用于身份验证
 VALID_TOKEN = "your_token_here"
